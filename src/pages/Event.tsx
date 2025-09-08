@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
+import { addDoc, collection, getDocs, query, where, serverTimestamp } from 'firebase/firestore'
 import { db } from '../lib/firebase'
 import { useLocation } from 'react-router-dom'
 
@@ -46,10 +46,25 @@ export default function EventPage() {
       return
     }
 
+    // ✅ 기기 중복 체크
+    if (localStorage.getItem('bboggi_event_submitted') === 'true') {
+      setMsg('⚠️ 이미 이 기기에서 참여가 완료되었습니다.')
+      return
+    }
+
     setLoading(true)
 
     try {
-      // Firestore에 저장 (중복 체크는 서버에서 하는 게 안전함)
+      // ✅ 전화번호 중복 체크
+      const qSnap = await getDocs(
+        query(collection(db, 'submissions'), where('phone', '==', phone))
+      )
+      if (!qSnap.empty) {
+        setMsg('⚠️ 이미 참여한 전화번호입니다.')
+        return
+      }
+
+      // ✅ Firestore 저장
       await addDoc(collection(db, 'submissions'), {
         name: name.trim(),
         phone,
@@ -58,6 +73,9 @@ export default function EventPage() {
         mbti,
         createdAt: serverTimestamp(),
       })
+
+      // ✅ 기기 사용 기록 저장
+      localStorage.setItem('bboggi_event_submitted', 'true')
 
       setMsg('✅ 참여가 완료되었습니다! 감사합니다.')
       setName('')
@@ -135,6 +153,7 @@ export default function EventPage() {
           <div
             className={`text-center text-sm mt-2 ${
               msg.startsWith('✅') ? 'text-green-600' :
+              msg.startsWith('⚠️') ? 'text-orange-600' :
               msg.startsWith('❌') ? 'text-red-600' :
               'text-bboggi-red'
             }`}
@@ -145,9 +164,8 @@ export default function EventPage() {
       </div>
 
       <p className="mt-3 text-center text-xs text-neutral-500">
-        ※ 동일 전화번호 중복 방지는 서버 검증이 필요합니다.
+        ※ 동일 전화번호 및 동일 기기에서는 1회만 참여 가능합니다.
       </p>
-
       {/* 개인정보 모달 */}
       {showPrivacy && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
