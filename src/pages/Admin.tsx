@@ -61,7 +61,20 @@ export default function AdminPage() {
     }
   }
 
-  const pickWinners = (cnt: number) => {
+  // ✅ 새 추첨 (기존 winners 초기화 후 다시 뽑기)
+  const pickNewWinners = (cnt: number) => {
+    if (cnt <= 0 || submissions.length === 0) return
+    let pool = [...submissions]
+    if (excludePrev && winners.length > 0) {
+      const prevIds = new Set(winners.map((w) => w.id))
+      pool = pool.filter((s) => !prevIds.has(s.id))
+    }
+    const shuffled = pool.sort(() => 0.5 - Math.random())
+    setWinners(shuffled.slice(0, cnt))
+  }
+
+  // ✅ 추가 추첨 (기존 winners에 이어서 더 뽑기)
+  const pickAddWinners = (cnt: number) => {
     if (cnt <= 0 || submissions.length === 0) return
     let pool = [...submissions]
     if (excludePrev && winners.length > 0) {
@@ -72,6 +85,7 @@ export default function AdminPage() {
     setWinners([...winners, ...shuffled.slice(0, cnt)])
   }
 
+  // ✅ CSV 다운로드 (BOM 추가로 한글 깨짐 방지)
   const downloadCSV = (data: Submission[], filename: string) => {
     if (data.length === 0) return
     const header = ["id","name","phone","mbti","agree","marketingAgree","createdAt"]
@@ -85,7 +99,6 @@ export default function AdminPage() {
       s.createdAt?.toDate?.().toISOString() ?? "",
     ])
     const csvContent = [header, ...rows].map((r) => r.join(",")).join("\n")
-    // ✅ BOM 추가
     const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" })
     const url = URL.createObjectURL(blob)
     const link = document.createElement("a")
@@ -96,7 +109,7 @@ export default function AdminPage() {
     document.body.removeChild(link)
   }
 
-  // 로그인 화면
+  // 🔐 로그인 화면
   if (!user) {
     return (
       <section className="p-6 max-w-sm mx-auto">
@@ -122,10 +135,10 @@ export default function AdminPage() {
     )
   }
 
-  // 관리자 화면
+  // ✅ 관리자 화면
   return (
-    <section className="p-6 space-y-6 max-w-5xl mx-auto">
-      {/* 상단 헤더 */}
+    <section className="p-6 space-y-6 max-w-6xl mx-auto">
+      {/* 헤더 */}
       <div className="flex justify-between items-center border-b pb-3">
         <h2 className="text-2xl font-extrabold">관리자 페이지</h2>
         <div className="flex gap-2">
@@ -136,24 +149,37 @@ export default function AdminPage() {
 
       {/* 추첨 컨트롤 */}
       <div className="flex flex-wrap gap-3 items-center">
-        <button className="btn btn-secondary" onClick={() => pickWinners(1)}>랜덤 1명</button>
-        <button className="btn btn-secondary" onClick={() => pickWinners(3)}>랜덤 3명</button>
-        <button className="btn btn-secondary" onClick={() => pickWinners(5)}>랜덤 5명</button>
+        {/* 새 추첨 */}
+        <span className="font-bold">새 추첨:</span>
+        <button className="btn btn-secondary" onClick={() => pickNewWinners(1)}>1명</button>
+        <button className="btn btn-secondary" onClick={() => pickNewWinners(3)}>3명</button>
+        <button className="btn btn-secondary" onClick={() => pickNewWinners(5)}>5명</button>
 
-        <div className="flex items-center gap-2">
+        {/* 추가 추첨 */}
+        <span className="ml-6 font-bold">추가 추첨:</span>
+        <button className="btn btn-accent" onClick={() => pickAddWinners(1)}>1명</button>
+        <button className="btn btn-accent" onClick={() => pickAddWinners(3)}>3명</button>
+        <button className="btn btn-accent" onClick={() => pickAddWinners(5)}>5명</button>
+
+        {/* 수량 입력 */}
+        <div className="flex items-center gap-2 ml-6">
           <input
             type="number"
             value={count}
             min={1}
             onChange={(e) => setCount(Number(e.target.value))}
-            className="w-24 border px-2 py-1 rounded"
+            className="w-20 border px-2 py-1 rounded"
           />
-          <button className="btn btn-accent" onClick={() => pickWinners(count)}>
-            랜덤 {count}명
+          <button className="btn btn-primary" onClick={() => pickNewWinners(count)}>
+            새 추첨 {count}명
+          </button>
+          <button className="btn btn-accent" onClick={() => pickAddWinners(count)}>
+            추가 {count}명
           </button>
         </div>
 
-        <label className="flex items-center gap-2 ml-4">
+        {/* 옵션 */}
+        <label className="flex items-center gap-2 ml-6">
           <input
             type="checkbox"
             checked={excludePrev}
@@ -162,7 +188,7 @@ export default function AdminPage() {
           <span className="text-sm">이전 당첨자 제외</span>
         </label>
 
-        {/* CSV 다운로드는 오른쪽 끝으로 밀기 */}
+        {/* CSV 다운로드 */}
         <div className="ml-auto flex gap-2">
           <button className="btn btn-outline" onClick={() => downloadCSV(submissions, "submissions.csv")}>
             전체 CSV 다운로드
