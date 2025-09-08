@@ -3,14 +3,36 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="뽀기가 추천해주는 MBTI별 떡뽀기 — 12문항으로 간단히 검사하고 내 MBTI에 맞는 떡볶이 추천을 받아보세요! 결과 이미지를 다운로드·공유하고 이벤트에도 참여하세요.">
-    <meta property="og:title" content="뽀기가 추천해주는 MBTI별 떡뽀기" />
-    <meta property="og:description" content="12문항 초간단 MBTI 검사 후, 내 성향에 꼭 맞는 떡볶이 추천! 결과 이미지 다운로드·공유·이벤트 참여까지 한 번에." />
-    <meta property="og:image" content="/og.png" />
-    <meta property="og:type" content="website" />
+
+    <!-- 🔎 SEO 기본 -->
+    <title>떡볶이테스트 - 뽀기가 추천해주는 MBTI별 떡뽀기</title>
+    <meta name="description" content="떡볶이테스트 | 12문항 간단 검사로 내 MBTI에 맞는 떡볶이를 추천! 뽀기가 결과 이미지를 만들어주고 공유·이벤트 참여까지 한 번에 즐겨보세요.">
+    <meta name="keywords" content="떡볶이테스트, 떡볶이 MBTI, 뽀기, MBTI 테스트, 떡볶이 추천, 떡볶이 심리테스트, 떡볶이 페스티벌" />
     <meta name="theme-color" content="#b00020" />
-    <title>뽀기가 추천해주는 MBTI별 떡뽀기</title>
+
+    <!-- 📱 오픈그래프 (SNS 공유용) -->
+    <meta property="og:title" content="떡볶이테스트 | 뽀기가 추천하는 MBTI별 떡볶이" />
+    <meta property="og:description" content="12문항으로 즐기는 떡볶이테스트! 뽀기가 당신의 MBTI에 맞는 떡볶이를 추천합니다." />
+    <meta property="og:image" content="https://bbogi.site/og.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://bbogi.site" />
+
+    <!-- 🐦 트위터 카드 -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="떡볶이테스트 - 뽀기가 추천해주는 MBTI별 떡뽀기" />
+    <meta name="twitter:description" content="12문항 초간단 MBTI 검사 후, 내 성향에 꼭 맞는 떡볶이 추천! 결과 이미지 다운로드·공유·이벤트 참여까지 한 번에." />
+    <meta name="twitter:image" content="https://bbogi.site/og.png" />
+
+    <!-- 📊 구글 애널리틱스 (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4FSH9XHN7T"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-4FSH9XHN7T');
+    </script>
   </head>
+
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
