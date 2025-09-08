@@ -124,30 +124,36 @@ export default function AdminPage() {
 
   // 관리자 화면
   return (
-    <section className="p-4 space-y-4">
-      <div className="flex justify-between items-center">
-        <h2 className="text-xl font-extrabold">관리자 페이지</h2>
-        <button className="btn btn-ghost" onClick={logout}>로그아웃</button>
+    <section className="p-6 space-y-6 max-w-5xl mx-auto">
+      {/* 상단 헤더 */}
+      <div className="flex justify-between items-center border-b pb-3">
+        <h2 className="text-2xl font-extrabold">관리자 페이지</h2>
+        <div className="flex gap-2">
+          <button className="btn btn-primary" onClick={loadData}>데이터 새로고침</button>
+          <button className="btn btn-ghost" onClick={logout}>로그아웃</button>
+        </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-2">
-        <button className="btn btn-primary" onClick={loadData}>데이터 새로고침</button>
+      {/* 추첨 컨트롤 */}
+      <div className="flex flex-wrap gap-3 items-center">
         <button className="btn btn-secondary" onClick={() => pickWinners(1)}>랜덤 1명</button>
         <button className="btn btn-secondary" onClick={() => pickWinners(3)}>랜덤 3명</button>
         <button className="btn btn-secondary" onClick={() => pickWinners(5)}>랜덤 5명</button>
+
         <div className="flex items-center gap-2">
           <input
             type="number"
             value={count}
             min={1}
             onChange={(e) => setCount(Number(e.target.value))}
-            className="w-20 border px-2 py-1 rounded"
+            className="w-24 border px-2 py-1 rounded"
           />
           <button className="btn btn-accent" onClick={() => pickWinners(count)}>
             랜덤 {count}명
           </button>
         </div>
-        <label className="flex items-center gap-2">
+
+        <label className="flex items-center gap-2 ml-4">
           <input
             type="checkbox"
             checked={excludePrev}
@@ -155,14 +161,19 @@ export default function AdminPage() {
           />
           <span className="text-sm">이전 당첨자 제외</span>
         </label>
-        <button className="btn btn-ghost" onClick={() => downloadCSV(submissions, "submissions.csv")}>
-          전체 CSV 다운로드
-        </button>
-        <button className="btn btn-ghost" onClick={() => downloadCSV(winners, "winners.csv")}>
-          당첨자 CSV 다운로드
-        </button>
+
+        {/* CSV 다운로드는 오른쪽 끝으로 밀기 */}
+        <div className="ml-auto flex gap-2">
+          <button className="btn btn-outline" onClick={() => downloadCSV(submissions, "submissions.csv")}>
+            전체 CSV 다운로드
+          </button>
+          <button className="btn btn-outline" onClick={() => downloadCSV(winners, "winners.csv")}>
+            당첨자 CSV 다운로드
+          </button>
+        </div>
       </div>
 
+      {/* 데이터 현황 */}
       <div>
         <h3 className="font-bold mt-4">총 응모자 수: {submissions.length}</h3>
         {winners.length > 0 && (
