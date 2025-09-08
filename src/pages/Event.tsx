@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { addDoc, collection, getDocs, query, where, serverTimestamp } from 'firebase/firestore'
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { db } from '../lib/firebase'
 import { useLocation } from 'react-router-dom'
 
@@ -49,28 +49,21 @@ export default function EventPage() {
     setLoading(true)
 
     try {
-      const qSnap = await getDocs(
-        query(collection(db, 'submissions'), where('phone', '==', phone))
-      )
+      // Firestore에 저장 (중복 체크는 서버에서 하는 게 안전함)
+      await addDoc(collection(db, 'submissions'), {
+        name: name.trim(),
+        phone,
+        agree,
+        marketingAgree,
+        mbti,
+        createdAt: serverTimestamp(),
+      })
 
-      if (!qSnap.empty) {
-        setMsg('이미 참여한 전화번호입니다.')
-      } else {
-        await addDoc(collection(db, 'submissions'), {
-          name: name.trim(),
-          phone,
-          agree,
-          marketingAgree,
-          mbti,
-          createdAt: serverTimestamp()
-        })
-
-        setMsg('✅ 참여가 완료되었습니다! 감사합니다.')
-        setName('')
-        setPhone('')
-        setAgree(false)
-        setMarketingAgree(false)
-      }
+      setMsg('✅ 참여가 완료되었습니다! 감사합니다.')
+      setName('')
+      setPhone('')
+      setAgree(false)
+      setMarketingAgree(false)
     } catch (e) {
       console.error('Firestore 저장 오류:', e)
       setMsg('❌ 오류가 발생했습니다. 잠시 후 다시 시도해주세요.')
@@ -115,7 +108,7 @@ export default function EventPage() {
             onChange={e => setAgree(e.target.checked)}
           />
           <span className="text-sm underline" onClick={() => setShowPrivacy(true)}>
-            개인정보 수집·이용에 동의합니다. (경품 추첨 및 당첨 안내 목적)
+            개인정보 수집·이용에 동의합니다. (필수)
           </span>
         </label>
 
@@ -150,76 +143,84 @@ export default function EventPage() {
           </div>
         )}
       </div>
+
       <p className="mt-3 text-center text-xs text-neutral-500">
-        ※ 동일 전화번호는 1회만 참여 가능합니다.
+        ※ 동일 전화번호 중복 방지는 서버 검증이 필요합니다.
       </p>
 
       {/* 개인정보 모달 */}
       {showPrivacy && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl max-w-lg w-full p-6 shadow-lg overflow-y-auto max-h-[80vh]">
-            <h3 className="font-bold text-lg mb-3">개인정보 수집·이용 안내</h3>
-            <p className="text-sm text-neutral-600 whitespace-pre-line">
-              주최측은 「개인정보 보호법」 등 관련 법령에 따라 본 이벤트 참여와 관련하여 아래와 같이 개인정보를 수집·이용합니다.
-
-              1. 수집 항목  
-              - 필수: 이름, 연락처(휴대전화), MBTI 결과 등 
-              - 선택: 마케팅 수신 여부  
-
-              2. 수집 목적  
-              - 이벤트 응모 확인 및 경품 추첨, 당첨 안내  
-              - 행사 진행 및 운영 관리  
-              - (선택 동의 시) 향후 행사·프로그램 홍보 및 정보 제공  
-
-              3. 보유 및 이용 기간  
-              - 이벤트 종료 후 3개월 이내 파기  
-              - 단, 관계 법령에 따른 보존 의무가 있는 경우 해당 기간 동안 보관  
-
-              4. 제3자 제공  
-              - 경품 발송을 위해 택배사 등 배송 대행 업체에 이름·연락처를 제공할 수 있으며, 제공 목적 달성 후 즉시 파기합니다.  
-
-              5. 개인정보 보호책임자  
-              - 성명: (주) 애이앤비프로젝트 / 경영지원팀 하지택 주임
-              - 연락처: 053-253-0515 / tag@anbprojec.kr
-            </p>
-            <button
-              className="btn btn-primary mt-4 w-full"
-              onClick={() => setShowPrivacy(false)}
-            >
-              닫기
-            </button>
+            <h3 className="font-bold text-lg mb-4">개인정보 수집·이용 안내</h3>
+            <div className="text-sm text-neutral-700 space-y-4">
+              <div>
+                <b>1. 수집 항목</b>
+                <ul className="list-disc pl-5">
+                  <li>필수: 이름, 연락처(휴대전화), MBTI 결과</li>
+                  <li>선택: 마케팅 수신 여부</li>
+                </ul>
+              </div>
+              <div>
+                <b>2. 수집 목적</b>
+                <ul className="list-disc pl-5">
+                  <li>이벤트 응모 확인 및 경품 추첨, 당첨 안내</li>
+                  <li>행사 진행 및 운영 관리</li>
+                  <li>(선택 동의 시) 향후 행사·프로그램 홍보 및 정보 제공</li>
+                </ul>
+              </div>
+              <div>
+                <b>3. 보유 및 이용 기간</b>
+                <p>- 이벤트 종료 후 3개월 이내 파기<br/>- 단, 관계 법령에 따른 보존 의무가 있는 경우 해당 기간 동안 보관</p>
+              </div>
+              <div>
+                <b>4. 제3자 제공</b>
+                <p>- 경품 발송을 위해 배송 업체에 이름·연락처를 제공할 수 있으며, 제공 목적 달성 후 즉시 파기합니다.</p>
+              </div>
+              <div>
+                <b>5. 개인정보 보호책임자</b>
+                <p>- 성명: (주) 애이앤비프로젝트 / 경영지원팀 하지택 주임<br/>- 연락처: 053-253-0515 / tag@anbprojec.kr</p>
+              </div>
+            </div>
+            <button className="btn btn-primary mt-6 w-full" onClick={() => setShowPrivacy(false)}>닫기</button>
           </div>
         </div>
       )}
+
       {/* 마케팅 모달 */}
       {showMarketing && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl max-w-lg w-full p-6 shadow-lg overflow-y-auto max-h-[80vh]">
-            <h3 className="font-bold text-lg mb-3">마케팅 정보 수신 동의 안내</h3>
-            <p className="text-sm text-neutral-600 whitespace-pre-line">
-              주최측은 향후 행사 및 마케팅 안내를 위해 아래와 같이 개인정보를 이용할 수 있습니다.
-
-              1. 이용 항목  
-              - 이름, 연락처(휴대전화)  
-
-              2. 이용 목적  
-              - 축제 및 이벤트 홍보, 할인·혜택 정보 제공  
-              - 뉴스레터, 문자, 카카오톡 채널 발송  
-
-              3. 보유 및 이용 기간  
-              - 동의 철회 시까지 보관 및 이용  
-              - 철회 요청 시 즉시 파기  
-
-              ※ 본 동의는 선택사항이며, 동의하지 않아도 이벤트 참여 및 당첨에는 제한이 없습니다.  
-              ※ 마케팅 수신 동의 철회는 개인정보 보호책임자(contact@anbproject.kr / 053-253-0515)에게 요청할 수 있습니다.
-            </p>
-            <button
-              className="btn btn-primary mt-4 w-full"
-              onClick={() => setShowMarketing(false)}
-            >
-              닫기
-            </button>
+            <h3 className="font-bold text-lg mb-4">마케팅 정보 수신 동의 안내</h3>
+            <div className="text-sm text-neutral-700 space-y-4">
+              <div>
+                <b>1. 이용 항목</b>
+                <ul className="list-disc pl-5">
+                  <li>이름</li>
+                  <li>연락처(휴대전화)</li>
+                </ul>
+              </div>
+              <div>
+                <b>2. 이용 목적</b>
+                <ul className="list-disc pl-5">
+                  <li>축제 및 이벤트 홍보</li>
+                  <li>할인·혜택 정보 제공</li>
+                  <li>뉴스레터, 문자, 카카오톡 채널 발송</li>
+                </ul>
+              </div>
+              <div>
+                <b>3. 보유 및 이용 기간</b>
+                <p>- 동의 철회 시까지 보관 및 이용<br/>- 철회 요청 시 즉시 파기</p>
+              </div>
+              <div>
+                <b>비고</b>
+                <p>※ 본 동의는 선택사항이며, 동의하지 않아도 이벤트 참여 및 당첨에는 제한이 없습니다.<br/>※ 마케팅 수신 동의 철회는 개인정보 보호책임자(contact@anbproject.kr / 053-253-0515)에게 요청할 수 있습니다.</p>
+              </div>
+            </div>
+            <button className="btn btn-primary mt-6 w-full" onClick={() => setShowMarketing(false)}>닫기</button>
           </div>
         </div>
       )}
- </section>)}
+    </section>
+  )
+}
