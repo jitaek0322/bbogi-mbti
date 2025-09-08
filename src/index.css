@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: light; }
+body { @apply bg-bboggi-cream text-bboggi-ink font-pretendard; }
+.container { @apply max-w-md mx-auto px-4; }
+.card { @apply bg-white rounded-2xl p-5 shadow-soft; } 
+.btn { @apply inline-flex items-center justify-center rounded-xl px-4 py-3 font-semibold transition active:scale-[0.98]; }
+.btn-primary { @apply bg-bboggi-red text-white; }
+.btn-ghost { @apply bg-white border border-neutral-200; }
+.badge { @apply inline-block rounded-full bg-bboggi-mint px-3 py-1 text-sm font-semibold; }
+
+/* animations */
+@keyframes spin-slow { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }
+.animate-spin-slow { animation: spin-slow 2s linear infinite; }
+
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(12px) } to { opacity: 1; transform: translateY(0) } }
