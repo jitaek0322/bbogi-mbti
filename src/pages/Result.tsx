@@ -76,7 +76,7 @@ function Result() {
       content: {
         title: "🔥 뽀기 떡볶이 MBTI 테스트",
         description: "12문항으로 내 성향에 맞는 떡볶이를 추천받아보세요! 🍲",
-        imageUrl: "https://bbogi.site/og.png",
+        imageUrl: "https://bbogi.site/kakao_og.png",
         link: {
           mobileWebUrl: pageUrl,
           webUrl: pageUrl,
