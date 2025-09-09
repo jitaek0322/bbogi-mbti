@@ -3,7 +3,7 @@ import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { RESULT_MAP } from "../data/resultMap";
 import html2canvas from "html2canvas";
 
-// 전역 Kakao 타입 선언
+// Kakao 타입 선언
 declare global {
   interface Window {
     Kakao: any;
@@ -27,8 +27,15 @@ function Result() {
   }, [analyzing]);
 
   const pageUrl = useMemo(() => {
-    return window.location.origin + "/result/" + mbti;
-  }, [mbti]);
+    return "https://bbogi.site/";
+  }, []);
+
+  // 🔑 Kakao SDK 초기화
+  useEffect(() => {
+    if (window.Kakao && !window.Kakao.isInitialized()) {
+      window.Kakao.init("aefc9764aa14436d6f64e0d5658b12a4"); // 👉 발급받은 JS 키
+    }
+  }, []);
 
   // 이미지 다운로드
   const onDownload = async () => {
@@ -47,14 +54,12 @@ function Result() {
         return Promise.resolve();
       })
     );
-
     await new Promise((resolve) => setTimeout(resolve, 200));
 
     const canvas = await html2canvas(card, {
       useCORS: true,
       backgroundColor: "#ffffff",
       scale: 2,
-      logging: false,
     });
 
     const link = document.createElement("a");
@@ -63,10 +68,36 @@ function Result() {
     link.click();
   };
 
+  // 카카오톡 공유
+  const shareKakao = () => {
+    if (!window.Kakao) return;
+    window.Kakao.Share.sendDefault({
+      objectType: "feed",
+      content: {
+        title: "🔥 뽀기 떡볶이 MBTI 테스트",
+        description: "12문항으로 내 성향에 맞는 떡볶이를 추천받아보세요! 🍲",
+        imageUrl: "https://bbogi.site/og.png",
+        link: {
+          mobileWebUrl: pageUrl,
+          webUrl: pageUrl,
+        },
+      },
+      buttons: [
+        {
+          title: "테스트 하러가기",
+          link: {
+            mobileWebUrl: pageUrl,
+            webUrl: pageUrl,
+          },
+        },
+      ],
+    });
+  };
+
   return (
     <section className="relative">
-      {/* 결과 카드 */}
       <div className="card space-y-3 max-w-xl mx-auto">
+        {/* 결과 카드 */}
         <div
           ref={cardRef}
           className="rounded-xl overflow-hidden border border-neutral-100 bg-white"
@@ -86,10 +117,16 @@ function Result() {
               alt={mbti}
               className="w-full object-cover max-h-[420px]"
             />
+            {/* 👉 뽀기 로고 추가 */}
+            <img
+              src="/bboggi.png"
+              alt="bboggi"
+              className="w-16 h-16 absolute bottom-3 right-3 rounded-xl border-4 border-white shadow-md"
+            />
           </div>
         </div>
 
-        {/* 버튼 */}
+        {/* 버튼 영역 */}
         <div className="space-y-3">
           <button
             className="btn btn-primary w-full"
@@ -108,10 +145,10 @@ function Result() {
                 if (navigator.share) {
                   navigator.share({
                     text: "🔥 뽀기 떡볶이 MBTI 테스트 🍲 12문항으로 내 성향에 맞는 떡볶이를 추천받아보세요!",
-                    url: "https://bbogi.site/",
+                    url: pageUrl,
                   });
                 } else {
-                  navigator.clipboard.writeText("https://bbogi.site/");
+                  navigator.clipboard.writeText(pageUrl);
                   alert("링크가 복사되었습니다!");
                 }
               }}
@@ -119,6 +156,52 @@ function Result() {
               공유하기
             </button>
           </div>
+        </div>
+
+        {/* 아이콘 공유 버튼 */}
+        <div className="flex justify-center gap-4 mt-4">
+          {/* 카카오톡 */}
+          <button
+            onClick={shareKakao}
+            className="w-12 h-12 rounded-full flex items-center justify-center bg-yellow-400"
+          >
+            <img src="/icons/kakao.svg" alt="카카오톡" className="w-6 h-6" />
+          </button>
+
+          {/* 인스타그램 */}
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText(pageUrl).then(() => {
+                alert("링크가 복사되었습니다! 인스타그램 스토리에 붙여넣어 공유하세요 📲");
+                window.location.href = "instagram://app";
+              });
+            }}
+            className="w-12 h-12 rounded-full flex items-center justify-center bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600"
+          >
+            <img src="/icons/instagram.svg" alt="인스타그램" className="w-6 h-6" />
+          </button>
+
+          {/* 페이스북 */}
+          <a
+            href={`https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`}
+            target="_blank"
+            rel="noreferrer"
+            className="w-12 h-12 rounded-full flex items-center justify-center bg-blue-600"
+          >
+            <img src="/icons/facebook.svg" alt="페이스북" className="w-6 h-6" />
+          </a>
+
+          {/* 트위터(X) */}
+          <a
+            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+              "🔥 뽀기 떡볶이 MBTI 테스트 🍲 12문항으로 내 성향에 맞는 떡볶이를 추천받아보세요!"
+            )}&url=${pageUrl}&hashtags=떡볶이페스티벌,뽀기,떡볶이테스트,MBTI`}
+            target="_blank"
+            rel="noreferrer"
+            className="w-12 h-12 rounded-full flex items-center justify-center bg-black"
+          >
+            <img src="/icons/twitter.svg" alt="트위터" className="w-6 h-6" />
+          </a>
         </div>
       </div>
     </section>
