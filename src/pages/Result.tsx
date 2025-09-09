@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { RESULT_MAP } from "../data/resultMap";
-import html2canvas from "html2canvas";
 
 // Kakao 타입 선언
 declare global {
@@ -15,9 +14,7 @@ function Result() {
   const [sp] = useSearchParams();
   const [analyzing, setAnalyzing] = useState(sp.get("loading") === "1");
   const nav = useNavigate();
-  const info = RESULT_MAP[mbti] ?? RESULT_MAP["ENFP"];
-
-  const cardRef = useRef<HTMLDivElement>(null);
+  const info = RESULT_MAP[mbti.toUpperCase()] ?? RESULT_MAP["ENFP"];
 
   useEffect(() => {
     if (analyzing) {
@@ -26,9 +23,7 @@ function Result() {
     }
   }, [analyzing]);
 
-  const pageUrl = useMemo(() => {
-    return "https://bbogi.site/";
-  }, []);
+  const pageUrl = useMemo(() => "https://bbogi.site/", []);
 
   // Kakao SDK 초기화
   useEffect(() => {
@@ -37,35 +32,14 @@ function Result() {
     }
   }, []);
 
-  // 이미지 다운로드
-  const onDownload = async () => {
-    const card = cardRef.current;
-    if (!card) return;
-
-    const images = card.querySelectorAll("img");
-    await Promise.all(
-      Array.from(images).map((img) => {
-        if (!img.complete) {
-          return new Promise((resolve) => {
-            img.onload = resolve;
-            img.onerror = resolve;
-          });
-        }
-        return Promise.resolve();
-      })
-    );
-    await new Promise((resolve) => setTimeout(resolve, 200));
-
-    const canvas = await html2canvas(card, {
-      useCORS: true,
-      backgroundColor: "#ffffff",
-      scale: 2,
-    });
-
+  // 이미지 다운로드 (info.image만 저장)
+  const onDownload = () => {
     const link = document.createElement("a");
-    link.download = `뽀기_${mbti}.png`;
-    link.href = canvas.toDataURL("image/png");
+    link.href = info.image; // 결과이미지 URL
+    link.download = `뽀기_${mbti.toUpperCase()}.png`;
+    document.body.appendChild(link);
     link.click();
+    document.body.removeChild(link);
   };
 
   // 카카오톡 공유
@@ -116,30 +90,23 @@ function Result() {
 
       {/* 결과 카드 */}
       <div className="card space-y-3 max-w-xl mx-auto">
-        <div
-          ref={cardRef}
-          className="rounded-xl overflow-hidden border border-neutral-100 bg-white"
-        >
+        <div className="rounded-xl overflow-hidden border border-neutral-100 bg-white">
           <div className="p-4 bg-white">
             <div className="text-xs text-neutral-500">
               뽀기가 추천해주는 MBTI별 떡뽀기
             </div>
             <h2 className="text-xl font-extrabold mt-1">
-              {mbti} · {info.title}
+              {mbti.toUpperCase()} · {info.title}
             </h2>
             <p className="text-neutral-600 mt-2">{info.desc}</p>
           </div>
           <div className="relative">
+            {/* 결과이미지 (1080x1920) */}
             <img
               src={info.image}
-              alt={mbti}
-              className="w-full object-cover max-h-[420px]"
-            />
-            {/* 👉 뽀기 로고 */}
-            <img
-              src="/bboggi.png"
-              alt="bboggi"
-              className="w-16 h-16 absolute bottom-3 right-3 rounded-xl border-4 border-white shadow-md"
+              alt={mbti.toUpperCase()}
+              className="w-full object-cover"
+              style={{ aspectRatio: "1080 / 1920" }}
             />
           </div>
         </div>
@@ -148,14 +115,14 @@ function Result() {
         <div className="space-y-3">
           <button
             className="btn btn-primary w-full"
-            onClick={() => nav("/event", { state: { mbti } })}
+            onClick={() => nav("/event", { state: { mbti: mbti.toUpperCase() } })}
           >
             이벤트 참여하기
           </button>
 
           <div className="grid grid-cols-2 gap-3">
             <button className="btn btn-ghost w-full" onClick={onDownload}>
-              사진 다운로드
+              결과이미지 다운로드
             </button>
             <button
               className="btn btn-ghost w-full"
