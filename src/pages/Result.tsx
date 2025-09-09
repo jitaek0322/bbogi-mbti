@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
 import { RESULT_MAP } from '../data/resultMap'
-import ShareButtons from '../components/ShareButtons'
 import html2canvas from 'html2canvas'
 
 export default function Result() {
@@ -114,28 +113,40 @@ export default function Result() {
         </div>
 
         {/* 액션 버튼 */}
-        <div className="grid grid-cols-2 gap-3">
-          <button className="btn btn-primary w-full" onClick={onDownload}>
-            사진 다운로드
-          </button>
+        <div className="space-y-3">
+          {/* 이벤트 참여하기 - 상단 풀폭 */}
           <button
-            className="btn btn-ghost w-full"
+            className="btn btn-primary w-full"
             onClick={() => nav('/event', { state: { mbti } })}
           >
             이벤트 참여하기
           </button>
+
+          {/* 하단 2열: 사진 다운로드 + 공유하기 */}
+          <div className="grid grid-cols-2 gap-3">
+            <button className="btn btn-ghost w-full" onClick={onDownload}>
+              사진 다운로드
+            </button>
+            <button
+              className="btn btn-ghost w-full"
+              onClick={() => {
+                if (navigator.share) {
+                  navigator.share({
+                    title: "뽀기 떡볶이 MBTI 테스트",
+                    text: "🔥 12문항으로 간단 검사! 내 성향에 맞는 떡볶이를 추천받아보세요!",
+                    url: "https://bbogi.site/"
+                  })
+                } else {
+                  navigator.clipboard.writeText("https://bbogi.site/")
+                  alert("링크가 복사되었습니다!")
+                }
+              }}
+            >
+              공유하기
+            </button>
+          </div>
         </div>
-
-        <ShareButtons
-          url={pageUrl}
-          title={'뽀기 테스트 결과: ' + mbti}
-          text={'내 떡볶이 MBTI는 ' + mbti}
-          hashtags={info.hashtags}
-        />
       </div>
-
-      <p className="mt-3 text-center text-xs text-neutral-500">
-      </p>
     </section>
   )
 }
