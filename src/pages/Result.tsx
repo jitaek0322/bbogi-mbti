@@ -21,7 +21,7 @@ function Result() {
 
   useEffect(() => {
     if (analyzing) {
-      const t = setTimeout(() => setAnalyzing(false), 1400);
+      const t = setTimeout(() => setAnalyzing(false), 3500); // ⏱️ 3.5초 유지
       return () => clearTimeout(t);
     }
   }, [analyzing]);
@@ -30,7 +30,7 @@ function Result() {
     return "https://bbogi.site/";
   }, []);
 
-  // 🔑 Kakao SDK 초기화
+  // Kakao SDK 초기화
   useEffect(() => {
     if (window.Kakao && !window.Kakao.isInitialized()) {
       window.Kakao.init("aefc9764aa14436d6f64e0d5658b12a4"); // 👉 발급받은 JS 키
@@ -96,8 +96,26 @@ function Result() {
 
   return (
     <section className="relative">
+      {/* ⏳ 분석중 오버레이 */}
+      {analyzing && (
+        <div
+          data-html2canvas-ignore="true"
+          className="fixed inset-0 z-50 bg-white/95 backdrop-blur-sm flex flex-col items-center justify-center text-center"
+        >
+          <img
+            src="/bboggi.png"
+            alt="bboggi"
+            className="w-28 h-28 animate-spin-slow mb-4 rounded-full border-4 border-bboggi-red/20"
+          />
+          <div className="text-bboggi-red font-extrabold text-xl">분석 중...</div>
+          <div className="text-neutral-500 text-sm mt-1">
+            뽀기가 당신의 떡볶이 취향을 읽는 중
+          </div>
+        </div>
+      )}
+
+      {/* 결과 카드 */}
       <div className="card space-y-3 max-w-xl mx-auto">
-        {/* 결과 카드 */}
         <div
           ref={cardRef}
           className="rounded-xl overflow-hidden border border-neutral-100 bg-white"
@@ -117,7 +135,7 @@ function Result() {
               alt={mbti}
               className="w-full object-cover max-h-[420px]"
             />
-            {/* 👉 뽀기 로고 추가 */}
+            {/* 👉 뽀기 로고 */}
             <img
               src="/bboggi.png"
               alt="bboggi"
@@ -126,7 +144,7 @@ function Result() {
           </div>
         </div>
 
-        {/* 버튼 영역 */}
+        {/* 버튼 */}
         <div className="space-y-3">
           <button
             className="btn btn-primary w-full"
@@ -158,7 +176,7 @@ function Result() {
           </div>
         </div>
 
-        {/* 아이콘 공유 버튼 */}
+        {/* 아이콘 공유 */}
         <div className="flex justify-center gap-4 mt-4">
           {/* 카카오톡 */}
           <button
