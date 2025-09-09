@@ -6,6 +6,14 @@ export default function Home() {
   const pageUrl = "https://bbogi.site/";
   const [count, setCount] = useState(0);
 
+  // milestones 정의
+  const milestones = [
+    { value: 1000, message: "천명 돌파! 뽀기 감동 😭", image: "/bbogi_1000.webp" },
+    { value: 2000, message: "이천명 돌파! 뽀기 변신 🥰", image: "/bboggi_2000.png" },
+    { value: 3000, message: "삼천명 돌파! 뽀기 대폭발 🤯", image: "/bboggi_3000.png" },
+  ];
+  const milestone = [...milestones].reverse().find((m) => count >= m.value);
+
   // DB에서 현재 카운트 불러오기
   useEffect(() => {
     fetch("/.netlify/functions/counter")
@@ -21,7 +29,7 @@ export default function Home() {
   };
 
   return (
-    <section className="text-center min-h-screen flex items-center justify-cente">
+    <section className="text-center min-h-screen flex items-center justify-center">
       <style>
         {`
           @keyframes wiggle {
@@ -37,10 +45,10 @@ export default function Home() {
 
       <div className="w-full max-w-lg mx-auto">
         <picture>
-          {/* 캐릭터 이미지 */}
-          <source srcSet="/cook.webp" type="image/webp" />
+          {/* 캐릭터 이미지 (milestone에 따라 변경) */}
+          <source srcSet={milestone?.image || "/cook.webp"} type="image/webp" />
           <img
-            src="/cook.png"
+            src={milestone?.image || "/cook.png"}
             alt="요리하는 뽀기 캐릭터"
             className="mx-auto mb-4 h-44 animate-wiggle"
             style={{
@@ -60,12 +68,19 @@ export default function Home() {
             떡볶이 조합을 추천받아봐 뽀기!
           </p>
 
-          {/* 이벤트 배너 */}
+          {/* 이벤트 배너 (기존 그대로 유지) */}
           <div className="mt-4 p-3 rounded-lg bg-yellow-100 text-yellow-800 font-semibold shadow-sm animate-pulse">
             🎁 지금 <span className="text-bboggi-red">떡볶이 페스티벌 이벤트</span> 진행중!
             <br />
             테스트 완료 후 이벤트 참여하고 선물 받아가뽀기! ✨
           </div>
+
+          {/* milestone 멘트 */}
+          {milestone && (
+            <div className="mt-4 p-3 rounded-lg bg-red-100 text-red-700 font-semibold shadow-sm animate-bounce">
+              {milestone.message}
+            </div>
+          )}
 
           {/* 참여자 카운터 */}
           <div className="mt-4 text-bboggi-red font-bold text-xl">
@@ -85,7 +100,7 @@ export default function Home() {
             🚀 테스트 시작
           </Link>
 
-          {/* 공유하기 섹션 */}
+          {/* 공유하기 섹션 (기존 그대로 유지) */}
           <div className="mt-8">
             <p className="text-xs text-neutral-500 mb-2">공유하기</p>
             <div className="flex justify-center gap-4">
