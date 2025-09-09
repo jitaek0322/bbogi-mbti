@@ -1,15 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- 메인 홈 -->
   <url>
     <loc>https://bbogi.site/</loc>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
+
+  <!-- 퀴즈 페이지 -->
   <url>
     <loc>https://bbogi.site/quiz</loc>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+
+  <!-- 결과 페이지 (대표 MBTI만 몇 개 예시) -->
   <url>
-    <loc>https://bbogi.site/result</loc>
+    <loc>https://bbogi.site/result/ENFP</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bbogi.site/result/INTJ</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- 이벤트 참여 페이지 -->
+  <url>
+    <loc>https://bbogi.site/event</loc>
+    <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
+
 </urlset>
