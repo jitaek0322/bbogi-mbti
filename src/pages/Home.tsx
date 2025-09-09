@@ -4,17 +4,18 @@ import { Link } from 'react-router-dom'
 export default function Home() {
   return (
     <section className="text-center">
-      {/* 캐릭터 이미지 + 그림자 */}
-      <div className="relative inline-block mx-auto mb-4">
-        {/* 그림자 레이어 */}
-        <div className="absolute inset-0 rounded-full bg-black/30 blur-2xl"></div>
-        {/* 캐릭터 이미지 */}
-        <img
-          src="/cook.png"
-          alt="요리하는 뽀기 캐릭터"
-          className="relative h-44"
-        />
-      </div>
+      <picture>
+      {/* 캐릭터 이미지 */}
+      <source srcSet="/cook.webp" type="image/webp" />
+      <img
+        src="/cook.png"
+        alt="요리하는 뽀기 캐릭터"
+        className="mx-auto mb-4 h-44"
+        style={{
+          filter: "drop-shadow(0px 6px 10px rgba(0,0,0,0.35))", // 뽀기 라인따라 자연스러운 그림자
+        }}
+      />
+      </picture>
 
       <div className="card">
         <span className="badge">뽀기가 추천해주는 MBTI별 떡뽀기</span>

@@ -29,24 +29,24 @@ export default function Result() {
     const card = cardRef.current
     if (!card) return
 
-    // 카드 안 이미지 로딩 대기
     const images = card.querySelectorAll('img')
-    await Promise.all(Array.from(images).map(img => {
-      if (!img.complete) {
-        return new Promise(resolve => {
-          img.onload = resolve
-          img.onerror = resolve
-        })
-      }
-      return Promise.resolve()
-    }))
+    await Promise.all(
+      Array.from(images).map(img => {
+        if (!img.complete) {
+          return new Promise(resolve => {
+            img.onload = resolve
+            img.onerror = resolve
+          })
+        }
+        return Promise.resolve()
+      })
+    )
     await new Promise(resolve => setTimeout(resolve, 200))
 
-    // 캡처 실행
     const canvas = await html2canvas(card, {
       useCORS: true,
-      backgroundColor: '#ffffff', // 흰 배경 지정
-      scale: 10,                   // 고해상도
+      backgroundColor: '#ffffff',
+      scale: 10,
       logging: false,
     })
 
@@ -64,11 +64,14 @@ export default function Result() {
           data-html2canvas-ignore="true"
           className="fixed inset-0 z-50 bg-white/95 backdrop-blur-sm flex flex-col items-center justify-center text-center"
         >
-          <img
-            src="/bboggi.png"
-            alt="bboggi"
-            className="w-28 h-28 animate-spin-slow mb-4 rounded-full border-4 border-bboggi-red/20"
-          />
+          <picture>
+            <source srcSet="/bboggi.webp" type="image/webp" />
+            <img
+              src="/bboggi.png"
+              alt="bboggi"
+              className="w-28 h-28 animate-spin-slow mb-4 rounded-full border-4 border-bboggi-red/20"
+            />
+          </picture>
           <div className="text-bboggi-red font-extrabold text-xl">분석 중...</div>
           <div className="text-neutral-500 text-sm mt-1">
             뽀기가 당신의 떡볶이 취향을 읽는 중
@@ -79,7 +82,7 @@ export default function Result() {
       {/* 결과 카드 */}
       <div className="card space-y-3 max-w-xl mx-auto">
         <div
-          ref={cardRef}  // 🔑 오직 이 카드만 캡처
+          ref={cardRef}
           className="rounded-xl overflow-hidden border border-neutral-100 animate-[fadeInUp_.5s_ease] bg-white"
         >
           <div className="p-4 bg-white">
@@ -99,22 +102,37 @@ export default function Result() {
             </div>
           </div>
           <div className="relative">
+            {/* WebP 지원용 - 나중에 이미지 최적화 시 활성화 */} 
+            {/*
+            <picture>
+              <source srcSet={info.image.replace('.png', '.webp')} type="image/webp" />
+              <img
+                src={info.image}
+                alt={mbti}
+                className="w-full object-cover max-h-[420px] bg-neutral-100"
+              />
+            </picture>
+            */}
+
+            {/* 현재는 PNG만 사용 */}
             <img
               src={info.image}
               alt={mbti}
               className="w-full object-cover max-h-[420px] bg-neutral-100"
             />
-            <img
-              src="/bboggi.png"
-              alt="bboggi"
-              className="w-16 h-16 absolute bottom-3 right-3 rounded-xl border-4 border-white shadow-soft"
-            />
+            <picture>
+              <source srcSet="/bboggi.webp" type="image/webp" />
+              <img
+                src="/bboggi.png"
+                alt="bboggi"
+                className="w-16 h-16 absolute bottom-3 right-3 rounded-xl border-4 border-white shadow-soft"
+              />
+            </picture>
           </div>
         </div>
 
         {/* 액션 버튼 */}
         <div className="space-y-3">
-          {/* 이벤트 참여하기 - 상단 풀폭 */}
           <button
             className="btn btn-primary w-full"
             onClick={() => nav('/event', { state: { mbti } })}
@@ -122,7 +140,6 @@ export default function Result() {
             이벤트 참여하기
           </button>
 
-          {/* 하단 2열: 사진 다운로드 + 공유하기 */}
           <div className="grid grid-cols-2 gap-3">
             <button className="btn btn-ghost w-full" onClick={onDownload}>
               사진 다운로드
@@ -132,13 +149,13 @@ export default function Result() {
               onClick={() => {
                 if (navigator.share) {
                   navigator.share({
-                    title: "뽀기 떡볶이 MBTI 테스트",
-                    text: "🔥 12문항으로 간단 검사! 내 성향에 맞는 떡볶이를 추천받아보세요!",
-                    url: "https://bbogi.site/"
+                    title: '뽀기 떡볶이 MBTI 테스트',
+                    text: '🔥 12문항으로 간단 검사! 내 성향에 맞는 떡볶이를 추천받아보세요!',
+                    url: 'https://bbogi.site/',
                   })
                 } else {
-                  navigator.clipboard.writeText("https://bbogi.site/")
-                  alert("링크가 복사되었습니다!")
+                  navigator.clipboard.writeText('https://bbogi.site/')
+                  alert('링크가 복사되었습니다!')
                 }
               }}
             >

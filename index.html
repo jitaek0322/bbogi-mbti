@@ -6,8 +6,10 @@
 
     <!-- 🔎 SEO 기본 -->
     <title>떡볶이테스트 - 뽀기가 추천해주는 MBTI별 떡뽀기</title>
-    <meta name="description" content="떡볶이테스트 | 12문항 간단 검사로 내 MBTI에 맞는 떡볶이를 추천! 뽀기가 결과 이미지를 만들어주고 공유·이벤트 참여까지 한 번에 즐겨보세요.">
+    <meta name="description" content="떡볶이테스트 | 12문항 간단 검사로 내 MBTI에 맞는 떡볶이를 추천! 뽀기가 결과 이미지를 만들어주고 공유·이벤트 참여까지 한 번에 즐겨보세요." />
     <meta name="keywords" content="떡볶이테스트, 떡볶이 MBTI, 뽀기, MBTI 테스트, 떡볶이 추천, 떡볶이 심리테스트, 떡볶이 페스티벌" />
+    <meta name="author" content="ANB Project" />
+    <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#b00020" />
 
     <!-- 📱 오픈그래프 (SNS 공유용) -->
@@ -16,12 +18,19 @@
     <meta property="og:image" content="https://bbogi.site/og.png" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://bbogi.site" />
+    <meta property="og:site_name" content="뽀기 MBTI 떡볶이테스트" />
 
     <!-- 🐦 트위터 카드 -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="떡볶이테스트 - 뽀기가 추천해주는 MBTI별 떡뽀기" />
     <meta name="twitter:description" content="12문항 초간단 MBTI 검사 후, 내 성향에 꼭 맞는 떡볶이 추천! 결과 이미지 다운로드·공유·이벤트 참여까지 한 번에." />
     <meta name="twitter:image" content="https://bbogi.site/og.png" />
+    <meta name="twitter:site" content="@your_twitter_id" />
+
+    <!-- 🖼️ 파비콘 & 애플 터치 아이콘 -->
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="apple-touch-icon" href="/logo.png" />
 
     <!-- 📊 구글 애널리틱스 (GA4) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4FSH9XHN7T"></script>
@@ -31,6 +40,21 @@
       gtag('js', new Date());
       gtag('config', 'G-4FSH9XHN7T');
     </script>
+
+    <!-- 🏷️ 구조화 데이터: 사이트 로고 -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "뽀기 MBTI 떡볶이테스트",
+      "url": "https://bbogi.site",
+      "logo": "https://bbogi.site/logo.png"
+    }
+    </script>
+
+    <!-- ⚡ 성능 최적화 -->
+    <link rel="preload" as="image" href="/og.png" />
+    <link rel="preload" as="image" href="/logo.png" />
   </head>
 
   <body>
