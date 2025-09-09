@@ -21,7 +21,7 @@ export default function Home() {
   };
 
   return (
-    <section className="text-center min-h-screen flex items-center justify-center bg-white">
+    <section className="text-center min-h-screen flex items-center justify-cente">
       <style>
         {`
           @keyframes wiggle {
