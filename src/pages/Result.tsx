@@ -122,7 +122,7 @@ function Result() {
 
           <div className="grid grid-cols-2 gap-3">
             <button className="btn btn-ghost w-full" onClick={onDownload}>
-              결과이미지 다운로드
+              이미지 다운로드
             </button>
             <button
               className="btn btn-ghost w-full"
