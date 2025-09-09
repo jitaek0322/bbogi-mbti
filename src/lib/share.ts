@@ -24,7 +24,7 @@ export function copyToClipboard(text: string) {
 // 트위터 공유
 export function twitterUrl() {
   const text = "🔥 뽀기가 추천하는 떡볶이 MBTI 테스트 🔥\n12문항으로 간단히 검사하고 내 성향에 맞는 떡볶이를 추천받으세요!"
-  const hashtags = ["떡볶이테스트", "MBTI", "뽀기"]
+  const hashtags = ["떡볶이페스티벌", "떡볶이테스트", "뽀기"]
   const q = new URLSearchParams({
     text,
     url: MAIN_URL,
