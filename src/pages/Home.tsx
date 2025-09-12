@@ -58,19 +58,19 @@ export default function Home() {
         </picture>
 
         <div className="card bg-white shadow-lg p-6 rounded-xl">
-          <span className="badge">뽀기가 알려주는 성격 유형</span>
+          <span className="badge">뽀기가 추천해주는 MBTI별 떡볶이 & 성격 테스트</span>
           <h1 className="text-2xl font-extrabold mt-2">
             나와 닮은 <span className="text-bboggi-red">뽀기</span>는 누구일까?
           </h1>
           <p className="text-neutral-600 mt-2">
             12문항 초간단 테스트로
             <br />
-            내 성향과 꼭 맞는 뽀기를 찾아보세요!
+            내 성향에 맞는 떡볶이와 성격 유형을 찾아보세요!
           </p>
 
           {/* 이벤트 배너 */}
           <div className="mt-4 p-3 rounded-lg bg-yellow-100 text-yellow-800 font-semibold shadow-sm animate-pulse">
-            🎁 지금 <span className="text-bboggi-red">뽀기 성격 테스트 이벤트</span> 진행중!
+            🎁 지금 <span className="text-bboggi-red">뽀기 성격·떡볶이 테스트 이벤트</span> 진행중!
             <br />
             테스트 완료 후 이벤트 참여하고 선물 받아가뽀기! ✨
           </div>
@@ -111,9 +111,9 @@ export default function Home() {
                     window.Kakao.Share.sendDefault({
                       objectType: "feed",
                       content: {
-                        title: "🔥 뽀기 성격 테스트",
+                        title: "🔥 뽀기 성격 & 떡볶이 MBTI 테스트",
                         description:
-                          "12문항으로 나와 닮은 뽀기를 찾아보세요! 😍",
+                          "12문항으로 나와 닮은 뽀기와 어울리는 떡볶이를 찾아보세요! 🍲",
                         imageUrl: "https://bbogi.site/kakao_og.png",
                         link: { mobileWebUrl: pageUrl, webUrl: pageUrl },
                       },
@@ -157,8 +157,8 @@ export default function Home() {
               {/* 트위터(X) */}
               <a
                 href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                  "🔥 뽀기 성격 테스트 😍 12문항으로 나와 닮은 뽀기를 찾아보세요!"
-                )}&url=${pageUrl}&hashtags=뽀기성격테스트,뽀기,성격유형,MBTI`}
+                  "🔥 뽀기 성격 & 떡볶이 MBTI 테스트 🍲 12문항으로 나와 닮은 뽀기를 찾아보세요!"
+                )}&url=${pageUrl}&hashtags=뽀기성격테스트,떡볶이테스트,뽀기,MBTI`}
                 target="_blank"
                 rel="noreferrer"
                 className="w-12 h-12 rounded-full flex items-center justify-center bg-black transition-transform hover:scale-110"
