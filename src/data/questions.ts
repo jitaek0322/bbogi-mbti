@@ -3,23 +3,22 @@ import type { Axis } from '../lib/mbti'
 export type Choice = { label: string; add: Partial<Record<Axis, number>> }
 export type Question = { id: string; title: string; choices: [Choice, Choice] }
 
-// 총 50문항 풀. 퀴즈 시작 시 여기에서 12문항을 랜덤 샘플링합니다.
 export const QUESTIONS_POOL: Question[] = [
-  { id: 'q1', title: '처음 가는 축제, 나는?', choices: [
-    { label: '사람들 속으로 먼저 들어간다', add: { E: 1 } },
-    { label: '구석에서 분위기를 살핀다', add: { I: 1 } },
+  { id: 'q1', title: '떡볶이를 먹으러 갈 때 나는...', choices: [
+    { label: '시끌벅적 다양한 메뉴를 나눠 먹는 게 즐겁다', add: { E: 1 } },
+    { label: '혼자서 조용히 내가 먹는 메뉴에 집중한다', add: { I: 1 } },
   ]},
-  { id: 'q2', title: '친구와 약속은', choices: [
-    { label: '즉흥적으로도 괜찮다', add: { P: 1 } },
-    { label: '계획대로 움직여야 편하다', add: { J: 1 } },
+  { id: 'q2', title: '떡볶이 먹으러 가기 전 나는...', choices: [
+    { label: '미리 맛집 검색 후, 이동경로를 파악한다', add: { J: 1 } },
+    { label: '그냥 길 가다 눈에 띄는 가게 들어가서 즐긴다', add: { P: 1 } },
   ]},
-  { id: 'q3', title: '떡볶이 주문할 때 나는', choices: [
-    { label: '새로운 조합을 시도한다', add: { N: 1 } },
-    { label: '인기 메뉴 위주로 고른다', add: { S: 1 } },
+  { id: 'q3', title: '떡볶이를 고를 때 나는...', choices: [
+    { label: '지금 눈앞에 보이는 메뉴판에서 익숙한 메뉴를 선택한다', add: { S: 1 } },
+    { label: '“혹시 떡볶이에 이런 재료를 넣으면 어떨까?” 새로운 조합을 상상한다', add: { N: 1 } },
   ]},
-  { id: 'q4', title: '친구 고민을 들어줄 때 나는', choices: [
-    { label: '해결 방법을 알려준다', add: { T: 1 } },
-    { label: '마음을 공감해준다', add: { F: 1 } },
+  { id: 'q4', title: '친구가 “나 옷에 떡볶이 국물 다 쏟았어...”라고 한다면?', choices: [
+    { label: '“휴지랑 물티슈 여기 있어.”', add: { T: 1 } },
+    { label: '“괜찮아? 기다려봐 도와줄게”', add: { F: 1 } },
   ]},
   { id: 'q5', title: '일정을 소화할 때 나는', choices: [
     { label: '그때그때 분위기에 맞춘다', add: { P: 1 } },
@@ -85,9 +84,9 @@ export const QUESTIONS_POOL: Question[] = [
     { label: '아이디어부터 자유롭게 나눈다', add: { E: 1, N: 1 } },
     { label: '안건과 결정을 먼저 정한다', add: { I: 1, J: 1 } },
   ]},
-  { id: 'q21', title: '떡볶이 토핑 추가', choices: [
-    { label: '색다른 토핑도 시도한다', add: { N: 1, P: 1 } },
-    { label: '기본 토핑이 안정감 있다', add: { S: 1, J: 1 } },
+  { id: 'q21', title: '떡볶이 주문할 때 나는...', choices: [
+    { label: '인기메뉴+사리 조합', add: { J: 1 } },
+    { label: '즉석에서 땡기는 메뉴', add: { P: 1 } },
   ]},
   { id: 'q22', title: '여행지 선택', choices: [
     { label: '사람 많은 인기 장소', add: { E: 1 } },
@@ -125,7 +124,6 @@ export const QUESTIONS_POOL: Question[] = [
     { label: '새로운 디저트 도전', add: { N: 1 } },
     { label: '익숙한 베스트 메뉴', add: { S: 1 } },
   ]},
-
   // 여기서부터 추가된 20문항
   { id: 'q31', title: '길을 잃었을 때 나는', choices: [
     { label: '일단 돌아다니며 길을 찾는다', add: { P: 1 } },
@@ -286,5 +284,25 @@ export const QUESTIONS_POOL: Question[] = [
   { id: 'q70', title: '떡볶이를 같이 먹을 때 나는', choices: [
     { label: '다양한 소스와 토핑을 섞는다', add: { N: 1, F: 1 } },
     { label: '정해진 조합을 지킨다', add: { S: 1, T: 1 } },
+  ]},
+  { id: 'q71', title: '같이 간 친구가 본인의 떡볶이가 맛없다고 툴툴거린다면...', choices: [
+    { label: '“남는 돈 얼마 있어? 그럼 다른 것도 시키자!”', add: { T: 1 } },
+    { label: '“헉! 맛 없다고? 그럼 나랑 같이 먹자”', add: { F: 1 } },
+  ]},
+  { id: 'q72', title: '먹던 중 새로운 떡볶이 가게 할인 쿠폰을 받았다면?', choices: [
+    { label: '쿠폰 유효기간과 위치 확인 후, 다음 주말 일정에 넣는다', add: { J: 1 } },
+    { label: '오늘 저녁에 바로 가본다', add: { P: 1 } },
+  ]},
+  { id: 'q73', title: '테이블에 떡볶이가 나오자마자 나는...', choices: [
+    { label: '“이거 진짜 맛있다! 너도 먹어봐!” 하며 주변에 알린다', add: { E: 1 } },
+    { label: '말없이 먼저 국물부터 맛보고 속으로 감탄한다', add: { I: 1 } },
+  ]},
+  { id: 'q74', title: '떡볶이 맛을 표현하라면...', choices: [
+    { label: '“매콤하고 달고, 국물은 걸쭉해.”', add: { S: 1 } },
+    { label: '“음.. 약간 불꽃놀이 같은 맛이야. 새로운 세계랄까?”', add: { N: 1 } },
+  ]},
+  { id: 'q75', title: '떡볶이 축제에서 줄이 너무 길면...', choices: [
+    { label: '줄 길이와 시간 대비 효율을 계산해서 다른 부스로 이동한다', add: { T: 1 } },
+    { label: '다 함께 수다떨며 기다리는 것도 낭만이라며 끝까지 기다린다', add: { F: 1 } },
   ]},
 ]
