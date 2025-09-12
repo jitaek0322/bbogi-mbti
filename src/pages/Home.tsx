@@ -58,19 +58,19 @@ export default function Home() {
         </picture>
 
         <div className="card bg-white shadow-lg p-6 rounded-xl">
-          <span className="badge">뽀기가 추천해주는 MBTI별 떡뽀기</span>
+          <span className="badge">뽀기가 알려주는 성격 유형</span>
           <h1 className="text-2xl font-extrabold mt-2">
-            나의 MBTI는 어떤 <span className="text-bboggi-red">떡볶이</span>일까?
+            나와 닮은 <span className="text-bboggi-red">뽀기</span>는 누구일까?
           </h1>
           <p className="text-neutral-600 mt-2">
-            초간단 테스트로 내 취향에 맞는
+            12문항 초간단 테스트로
             <br />
-            떡볶이 조합을 추천받아봐 뽀기!
+            내 성향과 꼭 맞는 뽀기를 찾아보세요!
           </p>
 
-          {/* 이벤트 배너 (기존 그대로 유지) */}
+          {/* 이벤트 배너 */}
           <div className="mt-4 p-3 rounded-lg bg-yellow-100 text-yellow-800 font-semibold shadow-sm animate-pulse">
-            🎁 지금 <span className="text-bboggi-red">떡볶이 페스티벌 이벤트</span> 진행중!
+            🎁 지금 <span className="text-bboggi-red">뽀기 성격 테스트 이벤트</span> 진행중!
             <br />
             테스트 완료 후 이벤트 참여하고 선물 받아가뽀기! ✨
           </div>
@@ -100,7 +100,7 @@ export default function Home() {
             🚀 테스트 시작
           </Link>
 
-          {/* 공유하기 섹션 (기존 그대로 유지) */}
+          {/* 공유하기 섹션 */}
           <div className="mt-8">
             <p className="text-xs text-neutral-500 mb-2">공유하기</p>
             <div className="flex justify-center gap-4">
@@ -111,9 +111,9 @@ export default function Home() {
                     window.Kakao.Share.sendDefault({
                       objectType: "feed",
                       content: {
-                        title: "🔥 뽀기 떡볶이 MBTI 테스트",
+                        title: "🔥 뽀기 성격 테스트",
                         description:
-                          "12문항으로 내 성향에 맞는 떡볶이를 추천받아보세요! 🍲",
+                          "12문항으로 나와 닮은 뽀기를 찾아보세요! 😍",
                         imageUrl: "https://bbogi.site/kakao_og.png",
                         link: { mobileWebUrl: pageUrl, webUrl: pageUrl },
                       },
@@ -157,8 +157,8 @@ export default function Home() {
               {/* 트위터(X) */}
               <a
                 href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                  "🔥 뽀기 떡볶이 MBTI 테스트 🍲 12문항으로 내 성향에 맞는 떡볶이를 추천받아보세요!"
-                )}&url=${pageUrl}&hashtags=떡볶이페스티벌,뽀기,떡볶이테스트,MBTI`}
+                  "🔥 뽀기 성격 테스트 😍 12문항으로 나와 닮은 뽀기를 찾아보세요!"
+                )}&url=${pageUrl}&hashtags=뽀기성격테스트,뽀기,성격유형,MBTI`}
                 target="_blank"
                 rel="noreferrer"
                 className="w-12 h-12 rounded-full flex items-center justify-center bg-black transition-transform hover:scale-110"
