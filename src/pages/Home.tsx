@@ -72,7 +72,7 @@ export default function Home() {
           <div className="mt-4 p-3 rounded-lg bg-yellow-100 text-yellow-800 font-semibold shadow-sm animate-pulse">
             🎁 지금 <span className="text-bboggi-red">뽀기 성격·떡볶이 테스트 이벤트</span> 진행중!
             <br />
-            테스트 완료 후 이벤트 참여하고 선물 받아가뽀기! ✨
+            테스트 완료 후 이벤트 참여하고 선물 받아뽀기! ✨
           </div>
 
           {/* milestone 멘트 */}
