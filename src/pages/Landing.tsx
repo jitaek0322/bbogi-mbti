@@ -1,12 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Landing(): JSX.Element {
   const navigate = useNavigate();
   const [locked, setLocked] = useState(false); // 클릭 잠금
+  const [forkLayer, setForkLayer] = useState<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const layer = document.getElementById("fork-layer") as HTMLDivElement | null;
+    setForkLayer(layer);
+  }, []);
 
   // 포크 폭발 함수
   const shootForks = (x: number, y: number, count = 15) => {
+    if (!forkLayer) return;
     for (let i = 0; i < count; i++) {
       const fork = document.createElement("img");
       fork.src = "/fork.png"; // 포크 PNG 경로
@@ -23,7 +30,7 @@ export default function Landing(): JSX.Element {
       fork.style.setProperty("--x", `${offsetX}px`);
       fork.style.setProperty("--y", `${offsetY}px`);
 
-      document.body.appendChild(fork);
+      forkLayer.appendChild(fork);
       fork.addEventListener("animationend", () => fork.remove());
     }
   };
@@ -67,6 +74,8 @@ export default function Landing(): JSX.Element {
           }
           .fork-fly {
             position: fixed;
+            top: 0;
+            left: 0;
             width: 40px;
             height: 40px;
             pointer-events: none;
@@ -75,6 +84,12 @@ export default function Landing(): JSX.Element {
           }
         `}
       </style>
+
+      {/* 포크 레이어 (Landing에서만 존재) */}
+      <div
+        id="fork-layer"
+        className="fixed inset-0 pointer-events-none z-[9999]"
+      />
 
       <div className="flex flex-col gap-6 w-full max-w-md">
         {/* 축제 메인홈 */}
