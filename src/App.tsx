@@ -4,6 +4,7 @@ import Quiz from './pages/Quiz'
 import Result from './pages/Result'
 import EventPage from './pages/Event'
 import Admin from './pages/Admin'
+import Landing from './pages/Landing'
 
 export default function App() {
   const location = useLocation()
@@ -31,7 +32,8 @@ export default function App() {
       {/* ✅ 관리자 페이지는 풀폭, 나머지는 중앙 container */}
       <main className={isAdmin ? "w-full py-6" : "container py-6"}>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Landing />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/result/:mbti" element={<Result />} />
           <Route path="/event" element={<EventPage />} />
