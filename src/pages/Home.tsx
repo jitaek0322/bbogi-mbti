@@ -9,8 +9,8 @@ export default function Home() {
   // milestones 정의
   const milestones = [
     { value: 1000, message: "천명 돌파! 뽀기 감동 😭", image: "/bbogi_1000.webp" },
-    { value: 2000, message: "이천명 돌파! 뽀기 변신 🥰", image: "/bboggi_2000.png" },
-    { value: 3000, message: "삼천명 돌파! 뽀기 대폭발 🤯", image: "/bboggi_3000.png" },
+    { value: 2000, message: "이천명 돌파! 뽀기 변신 🥰", image: "/bboggi_2000.webp" },
+    { value: 3000, message: "삼천명 돌파! 뽀기 대폭발 🤯", image: "/bboggi_3000.webp" },
   ];
   const milestone = [...milestones].reverse().find((m) => count >= m.value);
 
